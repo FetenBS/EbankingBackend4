@@ -7,6 +7,7 @@ import org.sid.dtos.AccountOperationRepository;
 import org.sid.dtos.BanckAccountRepository;
 import org.sid.dtos.CustomerRepository;
 import org.sid.entities.AccountOperation;
+import org.sid.entities.BanckAccount;
 import org.sid.entities.CurrentAccount;
 import org.sid.entities.Customer;
 import org.sid.entities.SavingAccount;
@@ -64,6 +65,22 @@ CommandLineRunner start(CustomerRepository customerRepository,
 				accountOperation.setBanckAccount(acc);
 				accountOperationRepository.save(accountOperation);
 				}	
+				BanckAccount banckAccount=banckAccountRepository.findById((long) 4).orElse(null);
+System.out.println("*****");
+System.out.println(banckAccount.getId());
+System.out.println(banckAccount.getBalance());
+System.out.println(banckAccount.getStatus());
+System.out.println(banckAccount.getCreatedAt());
+System.out.println(banckAccount.getCustomer().getName());
+if(banckAccount instanceof CurrentAccount) {
+((CurrentAccount) banckAccount).getOverDraft();
+}
+else if (banckAccount instanceof SavingAccount) {
+	((SavingAccount) banckAccount).getInterestRate();
+	
+}
+
+
 			
 			});
 		
