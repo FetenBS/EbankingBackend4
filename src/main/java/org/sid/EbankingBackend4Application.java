@@ -3,6 +3,8 @@ package org.sid;
 import java.util.Date;
 import java.util.stream.Stream;
 
+import javax.transaction.Transactional;
+
 import org.sid.dtos.AccountOperationRepository;
 import org.sid.dtos.BanckAccountRepository;
 import org.sid.dtos.CustomerRepository;
@@ -17,7 +19,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
+@Transactional 
 @SpringBootApplication
 public class EbankingBackend4Application {
 
@@ -66,25 +68,29 @@ CommandLineRunner start(CustomerRepository customerRepository,
 				accountOperationRepository.save(accountOperation);
 				}	
 				BanckAccount banckAccount=banckAccountRepository.findById((long) 4).orElse(null);
+				if(banckAccount!=null) {
 System.out.println("*****");
 System.out.println(banckAccount.getId());
 System.out.println(banckAccount.getBalance());
 System.out.println(banckAccount.getStatus());
 System.out.println(banckAccount.getCreatedAt());
 System.out.println(banckAccount.getCustomer().getName());
+System.out.println(banckAccount.getClass().getSimpleName());
 if(banckAccount instanceof CurrentAccount) {
-((CurrentAccount) banckAccount).getOverDraft();
+System.out.println("OverDraft=>"+((CurrentAccount) banckAccount).getOverDraft());
 }
 else if (banckAccount instanceof SavingAccount) {
-	((SavingAccount) banckAccount).getInterestRate();
+	System.out.println("Rate=>"+((SavingAccount) banckAccount).getInterestRate());
 	
 }
-
+banckAccount.getAccountOperations().forEach(op->{
+	System.out.println(op.getAmount());
+});
 
 			
-			});
+				}		
 		
-	};
+	});
 	
-}
-}
+};
+}}

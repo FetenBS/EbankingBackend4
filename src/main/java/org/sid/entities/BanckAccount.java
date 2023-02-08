@@ -9,6 +9,7 @@ import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,7 +28,8 @@ import lombok.NoArgsConstructor;
 @DiscriminatorColumn(name="TYPE", length=4)
 @Data @AllArgsConstructor @NoArgsConstructor
 public class BanckAccount {
-	@Id @GeneratedValue(strategy =GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy =GenerationType.IDENTITY
+			)
 	private Long id;
 	private double balance;
 	private Date createdAt;
@@ -35,6 +37,6 @@ public class BanckAccount {
 	private AccountStatus status;
 @ManyToOne
 	private Customer customer;
-@OneToMany(mappedBy="banckAccount")
+@OneToMany(mappedBy="banckAccount",fetch = FetchType.EAGER)
 	private List<AccountOperation> accountOperations;
 }
