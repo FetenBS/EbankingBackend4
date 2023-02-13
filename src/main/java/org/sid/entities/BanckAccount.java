@@ -37,6 +37,6 @@ public class BanckAccount {
 	private AccountStatus status;
 @ManyToOne
 	private Customer customer;
-@OneToMany(mappedBy="banckAccount",fetch = FetchType.EAGER)
+@OneToMany(mappedBy="banckAccount",fetch = FetchType.LAZY)
 	private List<AccountOperation> accountOperations;
 }

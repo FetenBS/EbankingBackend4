@@ -16,6 +16,7 @@ import org.sid.entities.Customer;
 import org.sid.entities.SavingAccount;
 import org.sid.enums.AccountStatus;
 import org.sid.enums.OperationType;
+import org.sid.services.BanckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -25,47 +26,17 @@ import org.springframework.context.annotation.Bean;
 @Transactional 
 @SpringBootApplication
 public class EbankingBackend4Application {
-@Autowired
-private BanckAccountRepository banckAccountRepository;
+
+
 	public static void main(String[] args) {
 		SpringApplication.run(EbankingBackend4Application.class, args);
 	}
-	CommandLineRunner commandLineRunner() {
-		return args->{
-			BanckAccount banckAccount=banckAccountRepository.findById((long) 4).orElse(null);
-			if(banckAccount!=null) {
-System.out.println("*****");
-System.out.println(banckAccount.getId());
-System.out.println(banckAccount.getBalance());
-System.out.println(banckAccount.getStatus());
-System.out.println(banckAccount.getCreatedAt());
-System.out.println(banckAccount.getCustomer().getName());
-System.out.println(banckAccount.getClass().getSimpleName());
-if(banckAccount instanceof CurrentAccount) {
-System.out.println("OverDraft=>"+((CurrentAccount) banckAccount).getOverDraft());
-}
-else if (banckAccount instanceof SavingAccount) {
-System.out.println("Rate=>"+((SavingAccount) banckAccount).getInterestRate());
-
-}
-banckAccount.getAccountOperations().forEach(op->{
-System.out.println(op.getType()+"/t"+op.getOperationDate()+"/t"+op.getAmount());
-});
-
-		
-			}	
-			
-			
-			
-			
-			
-			
-			
-			
-		}
-				
-				;}
 	@Bean
+	CommandLineRunner commandLineRunner(BanckService banckService) {
+		return args->{banckService.consulter();
+		};
+	}
+	//@Bean
 CommandLineRunner start(CustomerRepository customerRepository,
 		BanckAccountRepository banckAccountRepository,
 		AccountOperationRepository accountOperationRepository
