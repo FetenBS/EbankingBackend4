@@ -2,13 +2,12 @@ package org.sid;
 
 
 import java.util.Date;
+
 import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
-import org.sid.dtos.AccountOperationRepository;
-import org.sid.dtos.BanckAccountRepository;
-import org.sid.dtos.CustomerRepository;
+
 import org.sid.entities.AccountOperation;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.CurrentAccount;
@@ -16,6 +15,9 @@ import org.sid.entities.Customer;
 import org.sid.entities.SavingAccount;
 import org.sid.enums.AccountStatus;
 import org.sid.enums.OperationType;
+import org.sid.repositories.AccountOperationRepository;
+import org.sid.repositories.BanckAccountRepository;
+import org.sid.repositories.CustomerRepository;
 import org.sid.services.BanckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

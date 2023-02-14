@@ -2,10 +2,10 @@ package org.sid.services;
 
 import javax.transaction.Transactional;
 
-import org.sid.dtos.BanckAccountRepository;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.CurrentAccount;
 import org.sid.entities.SavingAccount;
+import org.sid.repositories.BanckAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 @Service
