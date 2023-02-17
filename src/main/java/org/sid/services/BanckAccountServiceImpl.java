@@ -2,14 +2,19 @@ package org.sid.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
+import org.sid.Exception.BalanceNotSufficentException;
+import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
+import org.sid.entities.AccountOperation;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.CurrentAccount;
 import org.sid.entities.Customer;
 import org.sid.entities.SavingAccount;
+import org.sid.enums.OperationType;
 import org.sid.repositories.AccountOperationRepository;
 import org.sid.repositories.BanckAccountRepository;
 import org.sid.repositories.CustomerRepository;
@@ -58,26 +63,44 @@ private AccountOperationRepository accountOperationRepository;
 */
 	@Override
 	public List<Customer> listCustomers() {
-		// TODO Auto-generated method stub
+		
+		return customerRepository.findAll();
+	}
+
+	@Override
+	public BanckAccount getBanckAccount(Long accountId) throws BankAccountNotFoundException{
+		BanckAccount banckAccount=banckAccountRepository.findById(accountId).orElseThrow(()->new BankAccountNotFoundException("bankAccount not found"));
 		return null;
 	}
 
-	@Override
-	public BanckAccount getBanckAccount(Long accountId) {
-		// TODO Auto-generated method stub
-		return null;
+	public void debit(Long accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficentException{
+		BanckAccount banckAccount=getBanckAccount(accountId);
+		if( banckAccount.getBalance()<amount) {
+		throw	new BalanceNotSufficentException("solde insuffisant");
+		
+		
+		}AccountOperation accountOperation=new AccountOperation();
+		accountOperation.setType(OperationType.DEBIT);
+		accountOperation.setAmount(amount);
+		accountOperation.setOperationDate(new Date());
+		accountOperation.setDescription(description);
+		accountOperation.setBanckAccount(banckAccount);
+		accountOperationRepository.save(accountOperation);
+		banckAccount.setBalance(banckAccount.getBalance()-amount);
+		banckAccountRepository.save(banckAccount);
 	}
 
-	@Override
-	public void debit(String accountId, double amount, String description) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void credit(String accountId, double amount, String description) {
-		// TODO Auto-generated method stub
-		
+	public void credit(Long accountId, double amount, String description) {
+	BanckAccount bankAccount=getBanckAccount(accountId);
+	AccountOperation accountOperation=new AccountOperation();
+	accountOperation.setType(OperationType.CREDIT);
+	accountOperation.setAmount(amount);
+	accountOperation.setOperationDate(new Date());
+	accountOperation.setDescription(description);
+	accountOperation.setBanckAccount(bankAccount);
+	accountOperationRepository.save(accountOperation);
+	bankAccount.setBalance(bankAccount.getBalance()+amount);	
+	banckAccountRepository.save(bankAccount);
 	}
 
 	@Override
@@ -114,10 +137,32 @@ savingAccount.setBalance(initialBalance);
 savingAccount.setCreatedAt(new Date());
 savingAccount.setCustomer(customer);
 savingAccount.setInterestRate(interestRate);
-SavingAccount saved=banckAccountRepository.save(savingAccount);
+SavingAccount savedBanckAccount=banckAccountRepository.save(savingAccount);
 		
-		return saved;
+		return savedBanckAccount;
 	}
+
+
+	@Override
+	public void debit(String accountId, double amount, String description) {
+	
+		
+	}
+
+
+	@Override
+	public void credit(String accountId, double amount, String description) {
+	
+		
+	}
+
+
+	
+	/*public void debit(Long accountId, double amount, String description) {
+		BanckAccount banckAccount=getBanckAccount(accountId);
+		
+		
+	}*/
 
 	
 

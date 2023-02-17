@@ -21,6 +21,7 @@ private Long id;
 private Date OperationDate;
 private double amount;
 private OperationType type;
+private String description;
 @ManyToOne
 private BanckAccount banckAccount;
 }
