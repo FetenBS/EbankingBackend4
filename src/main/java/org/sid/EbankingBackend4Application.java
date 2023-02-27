@@ -53,12 +53,21 @@ public class EbankingBackend4Application {
 			
 					banckAccountService.saveCurrentBanckAccount(Math.random()*90000, 9000, customer.getId());
 					banckAccountService.saveSavingBanckAccount(Math.random()*120000, 5.5, customer.getId());
-				
 					
+				banckAccountService.bankAccountList().forEach(account->{
 					for (int i=0;i<10;i++) {
+					try {
+						banckAccountService.credit(account.getId(),10000+Math.random()*120000, "Credit");
+						banckAccountService.debit(account.getId(),10000+Math.random()*120000,"Debit");
+					} catch (BankAccountNotFoundException | BalanceNotSufficentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+						
+					}
+				});
 					
 					
-				}
 			});
 		
 		};}
