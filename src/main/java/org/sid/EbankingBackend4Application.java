@@ -2,12 +2,14 @@ package org.sid;
 
 
 import java.util.Date;
-
+import java.util.List;
 import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
-
+import org.sid.Exception.BalanceNotSufficentException;
+import org.sid.Exception.BankAccountNotFoundException;
+import org.sid.Exception.CustomerNotFoundException;
 import org.sid.entities.AccountOperation;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.CurrentAccount;
@@ -18,6 +20,7 @@ import org.sid.enums.OperationType;
 import org.sid.repositories.AccountOperationRepository;
 import org.sid.repositories.BanckAccountRepository;
 import org.sid.repositories.CustomerRepository;
+import org.sid.services.BanckAccountService;
 import org.sid.services.BanckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -25,6 +28,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.repository.CrudRepository;
 @Transactional 
 @SpringBootApplication
 public class EbankingBackend4Application {
@@ -34,10 +38,47 @@ public class EbankingBackend4Application {
 		SpringApplication.run(EbankingBackend4Application.class, args);
 	}
 	@Bean
-	CommandLineRunner commandLineRunner(BanckService banckService) {
-		return args->{banckService.consulter();
-		};
-	}
+	CommandLineRunner commandLineRunner(BanckAccountService banckAccountService,CustomerRepository customerRepository,BanckAccountRepository banckAccountRepository, CrudRepository<AccountOperation, Long> accountOperationRepository) {
+		
+		
+		return args->{
+			Stream.of("AZIZ","YASSINE","Aicha","Adam").forEach(name->{
+				Customer customer=new Customer();
+				customer.setName(name);
+				customer.setEmail(name+"@gmail.com");
+				//customerRepository.save(customer);
+				banckAccountService.saveCustomer(customer);
+			});
+			banckAccountService.listCustomers().forEach(customer->{
+			
+					banckAccountService.saveCurrentBanckAccount(Math.random()*90000, 9000, customer.getId());
+					banckAccountService.saveSavingBanckAccount(Math.random()*120000, 5.5, customer.getId());
+				
+					
+					for (int i=0;i<10;i++) {
+					
+					
+				}
+			});
+		
+		};}
+			
+		//banckAccountService.listCustomers().forEach(customer->{
+			
+/*banckAccountService.saveCurrentBanckAccount(Math.random()*90000,99000, customer.getId());
+banckAccountService.saveSavingBanckAccount(Math.random()*120000, 5.5, customer.getId());
+List<BanckAccount> bankAccounts=banckAccountService.banckAccountsList();
+banckAccountService.banckAccountsList().forEach(account->{
+	for(BanckAccount bankAccount:bankAccounts) {
+	for (int i=0;i<10;i++) {
+		
+	
+
+		banckAccountService.credit(account.getId(), 10000+Math.random()*120000, "Credit");
+	
+		banckAccountService.debit(account.getId(),10000+Math.random()*120000,"Debit");
+	*/
+		//});
 	//@Bean
 CommandLineRunner start(CustomerRepository customerRepository,
 		BanckAccountRepository banckAccountRepository,

@@ -2,6 +2,8 @@ package org.sid.services;
 
 import java.util.List;
 
+import org.sid.Exception.BalanceNotSufficentException;
+import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.Customer;
@@ -16,8 +18,14 @@ BanckAccount saveSavingBanckAccount(double initialBalance,double interestRate,Lo
 
 List<Customer> listCustomers();
 BanckAccount getBanckAccount(Long accountId);
-void debit(String accountId,double amount,String description);
-void credit(String accountId,double amount,String description);
-void transfert(String accountIdSource, String accountIdDestination,double amount);
+//void debit(String accountId,double amount,String description);
+//void credit(String accountId,double amount,String description);
+//void transfert(String accountIdSource, String accountIdDestination,double amount) throws BankAccountNotFoundException, BalanceNotSufficentException;
+List<BanckAccount> banckAccountsList();
+void credit(Long accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficentException;
+List<BanckAccount> bankAccountList();
+void transfert(Long accountIdSource, Long accountIdDestination, double amount)
+		throws BankAccountNotFoundException, BalanceNotSufficentException;
+void debit(Long id, double d, String string) throws BankAccountNotFoundException, BalanceNotSufficentException;
 }
 

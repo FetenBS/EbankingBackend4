@@ -31,17 +31,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BanckAccountServiceImpl implements BanckAccountService {
 
+private static final List<BanckAccount> bankAccountRepository = null;
 private CustomerRepository customerRepository;
 private BanckAccountRepository banckAccountRepository;
 private AccountOperationRepository accountOperationRepository;
 
-	
 
 	public Customer saveCustomer(Customer customer ) {
 	log.info("Saving new Customer");
 	Customer savedCustomer=customerRepository.save(customer);
 		return savedCustomer;
 	}
+	@Override
+	public
+	List<BanckAccount> banckAccountsList(){
+		return banckAccountRepository.findAll();}
 
 
 /*	public BanckAccount saveBanckAccount(double initialBalance, String type, Long customerId) throws CustomerNotFoundException {
@@ -70,7 +74,7 @@ private AccountOperationRepository accountOperationRepository;
 	@Override
 	public BanckAccount getBanckAccount(Long accountId) throws BankAccountNotFoundException{
 		BanckAccount banckAccount=banckAccountRepository.findById(accountId).orElseThrow(()->new BankAccountNotFoundException("bankAccount not found"));
-		return null;
+		return banckAccount;
 	}
 
 	public void debit(Long accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficentException{
@@ -89,9 +93,11 @@ private AccountOperationRepository accountOperationRepository;
 		banckAccount.setBalance(banckAccount.getBalance()-amount);
 		banckAccountRepository.save(banckAccount);
 	}
-
-	public void credit(Long accountId, double amount, String description) {
+	@Override
+public void credit(Long accountId, double amount, String description)throws BankAccountNotFoundException {
 	BanckAccount bankAccount=getBanckAccount(accountId);
+	
+	  //BanckAccount bankAccount=banckAccountRepository.findById(accountId);
 	AccountOperation accountOperation=new AccountOperation();
 	accountOperation.setType(OperationType.CREDIT);
 	accountOperation.setAmount(amount);
@@ -100,13 +106,14 @@ private AccountOperationRepository accountOperationRepository;
 	accountOperation.setBanckAccount(bankAccount);
 	accountOperationRepository.save(accountOperation);
 	bankAccount.setBalance(bankAccount.getBalance()+amount);	
+	
 	banckAccountRepository.save(bankAccount);
 	}
-
-	@Override
-	public void transfert(String accountIdSource, String accountIdDestination, double amount) {
-		// TODO Auto-generated method stub
-		
+@Override
+	public void transfert(Long accountIdSource, Long accountIdDestination, double amount) throws BankAccountNotFoundException,BalanceNotSufficentException{
+		debit(accountIdSource,amount,"transfer to"+accountIdDestination);
+		credit(accountIdDestination,amount,"transfer from"+accountIdSource);
+	
 	}
 
 	@Override
@@ -143,18 +150,7 @@ SavingAccount savedBanckAccount=banckAccountRepository.save(savingAccount);
 	}
 
 
-	@Override
-	public void debit(String accountId, double amount, String description) {
 	
-		
-	}
-
-
-	@Override
-	public void credit(String accountId, double amount, String description) {
-	
-		
-	}
 
 
 	
@@ -163,7 +159,13 @@ SavingAccount savedBanckAccount=banckAccountRepository.save(savingAccount);
 		
 		
 	}*/
-
+	@Override
+public 	List<BanckAccount> bankAccountList(){
+	
+	
+	return banckAccountRepository.findAll();
+		
+	}
 	
 
 	
