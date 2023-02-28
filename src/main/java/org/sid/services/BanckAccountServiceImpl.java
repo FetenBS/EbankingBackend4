@@ -1,6 +1,7 @@
 package org.sid.services;
 
 import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,6 +21,7 @@ import org.sid.repositories.BanckAccountRepository;
 import org.sid.repositories.CustomerRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @AllArgsConstructor
 @Slf4j
+
 public class BanckAccountServiceImpl implements BanckAccountService {
 
 private static final List<BanckAccount> bankAccountRepository = null;

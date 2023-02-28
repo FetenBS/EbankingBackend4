@@ -1,7 +1,10 @@
 package org.sid.entities;
 
 import javax.persistence.Id;
+
 import javax.persistence.OneToMany;
+
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Entity
+
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Customer {
 	@Id @GeneratedValue(strategy =GenerationType.IDENTITY)
@@ -21,6 +25,7 @@ private Long id;
 private String name;
 private String email;
 @OneToMany(mappedBy="customer")
-//@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
 private List<BanckAccount> banckAccounts;
 }
