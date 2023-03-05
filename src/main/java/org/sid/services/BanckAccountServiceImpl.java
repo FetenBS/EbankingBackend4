@@ -1,21 +1,26 @@
 package org.sid.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.sid.Exception.BalanceNotSufficentException;
 import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
+import org.sid.dtos.CustomerDTO;
 import org.sid.entities.AccountOperation;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.CurrentAccount;
 import org.sid.entities.Customer;
 import org.sid.entities.SavingAccount;
 import org.sid.enums.OperationType;
+import org.sid.mappers.BankAccountMapperImpl;
 import org.sid.repositories.AccountOperationRepository;
 import org.sid.repositories.BanckAccountRepository;
 import org.sid.repositories.CustomerRepository;
@@ -34,11 +39,12 @@ import lombok.extern.slf4j.Slf4j;
 
 public class BanckAccountServiceImpl implements BanckAccountService {
 
-private static final List<BanckAccount> bankAccountRepository = null;
+//private static final List<CustomerDTO> customerDTOS = null;
+//private  List<BanckAccount> bankAccountRepository = null;
 private CustomerRepository customerRepository;
 private BanckAccountRepository banckAccountRepository;
 private AccountOperationRepository accountOperationRepository;
-
+private BankAccountMapperImpl dtoMapper;
 
 	public Customer saveCustomer(Customer customer ) {
 	log.info("Saving new Customer");
@@ -69,9 +75,18 @@ private AccountOperationRepository accountOperationRepository;
 	}
 */
 	@Override
-	public List<Customer> listCustomers() {
+	public List<CustomerDTO> listCustomers() {
+		List<Customer> customers=customerRepository.findAll();
+		 List<CustomerDTO> customerDTOS=customers.stream().map(customer->dtoMapper.fromCustomer(customer)).collect(Collectors.toList());
 		
-		return customerRepository.findAll();
+		
+		/*List<CustomerDTO> customerDTOS=new ArrayList<>();
+		for(Customer customer:customers) {
+			CustomerDTO customerDto=dtoMapper.fromCustomer(customer);
+			customerDTOS.add(customerDto);
+		}*/
+		return customerDTOS;
+
 	}
 
 	@Override
@@ -169,8 +184,13 @@ public 	List<BanckAccount> bankAccountList(){
 	return banckAccountRepository.findAll();
 		
 	}
+	@Override
+public CustomerDTO getCustomerDTO(Long customerId)throws CustomerNotFoundException {
+	Customer customer= customerRepository.findById(customerId)
+			.orElseThrow(()->new CustomerNotFoundException("customer not found"));
+	 return dtoMapper.fromCustomer(customer);
 	
-
+}
 	
 
 }

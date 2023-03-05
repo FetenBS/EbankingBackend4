@@ -53,6 +53,7 @@ public class EbankingBackend4Application {
 			
 					banckAccountService.saveCurrentBanckAccount(Math.random()*90000, 9000, customer.getId());
 					banckAccountService.saveSavingBanckAccount(Math.random()*120000, 5.5, customer.getId());
+					});
 					List<BanckAccount> banckAccounts=banckAccountService.banckAccountsList();
 				//banckAccountService.bankAccountList().forEach(account->{
 					for (BanckAccount banckAccount:banckAccounts) {
@@ -68,7 +69,7 @@ public class EbankingBackend4Application {
 					}	
 						
 					}}
-				});
+				//});
 					
 					
 			//});
