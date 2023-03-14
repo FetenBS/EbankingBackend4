@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.sid.Exception.BalanceNotSufficentException;
 import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
+import org.sid.dtos.CustomerDTO;
 import org.sid.entities.AccountOperation;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.CurrentAccount;
@@ -43,7 +44,7 @@ public class EbankingBackend4Application {
 		
 		return args->{
 			Stream.of("AZIZ","YASSINE","Aicha","Adam").forEach(name->{
-				Customer customer=new Customer();
+				CustomerDTO customer=new CustomerDTO();
 				customer.setName(name);
 				customer.setEmail(name+"@gmail.com");
 				//customerRepository.save(customer);

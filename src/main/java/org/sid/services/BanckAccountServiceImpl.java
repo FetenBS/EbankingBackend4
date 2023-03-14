@@ -1,6 +1,7 @@
 package org.sid.services;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import java.util.List;
@@ -10,12 +11,16 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.hibernate.annotations.common.util.impl.LoggerFactory;
+
 import org.sid.Exception.BalanceNotSufficentException;
 import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
+import org.sid.dtos.CurrentAccountDTO;
 import org.sid.dtos.CustomerDTO;
+import org.sid.dtos.SavingAccountDTO;
 import org.sid.entities.AccountOperation;
 import org.sid.entities.BanckAccount;
+
 import org.sid.entities.CurrentAccount;
 import org.sid.entities.Customer;
 import org.sid.entities.SavingAccount;
@@ -26,9 +31,12 @@ import org.sid.repositories.BanckAccountRepository;
 import org.sid.repositories.CustomerRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Client;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,11 +53,12 @@ private CustomerRepository customerRepository;
 private BanckAccountRepository banckAccountRepository;
 private AccountOperationRepository accountOperationRepository;
 private BankAccountMapperImpl dtoMapper;
-
-	public Customer saveCustomer(Customer customer ) {
+@Override
+	public CustomerDTO saveCustomer(CustomerDTO customerDTO ) {
 	log.info("Saving new Customer");
+	Customer customer=dtoMapper.fromCustomerDTO(customerDTO);
 	Customer savedCustomer=customerRepository.save(customer);
-		return savedCustomer;
+		return dtoMapper.fromCustomer(savedCustomer);
 	}
 	@Override
 	public
@@ -135,7 +144,7 @@ public void credit(Long accountId, double amount, String description)throws Bank
 	}
 
 	@Override
-	public BanckAccount saveCurrentBanckAccount(double initialBalance, double overDraft, Long customerId)
+	public CurrentAccountDTO saveCurrentBanckAccount(double initialBalance, double overDraft, Long customerId)
 			throws CustomerNotFoundException {
 		Customer customer=customerRepository.findById(customerId).orElse(null);
 	    if(customer==null)
@@ -147,11 +156,11 @@ public void credit(Long accountId, double amount, String description)throws Bank
 			currentAccount.setOverDraft(overDraft);
 			currentAccount.setCustomer(customer);
 			CurrentAccount savedBanckAccount=banckAccountRepository.save(currentAccount);
-		return savedBanckAccount;
+		return dtoMapper.fromCurrentAccount(savedBanckAccount);
 	}
 
 	@Override
-	public BanckAccount saveSavingBanckAccount(double initialBalance, double interestRate, Long customerId)
+	public SavingAccountDTO saveSavingBanckAccount(double initialBalance, double interestRate, Long customerId)
 			throws CustomerNotFoundException {
 		Customer customer=customerRepository.findById(customerId).orElse(null);
 	    if(customer==null)
@@ -164,7 +173,7 @@ savingAccount.setCustomer(customer);
 savingAccount.setInterestRate(interestRate);
 SavingAccount savedBanckAccount=banckAccountRepository.save(savingAccount);
 		
-		return savedBanckAccount;
+		return dtoMapper.fromAccountDTO(savedBanckAccount);
 	}
 
 
@@ -191,6 +200,16 @@ public CustomerDTO getCustomerDTO(Long customerId)throws CustomerNotFoundExcepti
 	 return dtoMapper.fromCustomer(customer);
 	
 }
+	@Override
+	public CustomerDTO updateCustomer(CustomerDTO customerDTO ) {
+	log.info("Saving new Customer");
+	Customer customer=dtoMapper.fromCustomerDTO(customerDTO);
+	Customer savedCustomer=customerRepository.save(customer);
+		return dtoMapper.fromCustomer(savedCustomer);
+	}
+	@Override
+	public void deleteCustomer(Long customerId) {
+		customerRepository.deleteById(customerId);
+	}
 	
-
 }

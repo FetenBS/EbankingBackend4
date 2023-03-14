@@ -5,14 +5,16 @@ import java.util.List;
 import org.sid.Exception.BalanceNotSufficentException;
 import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
+import org.sid.dtos.CurrentAccountDTO;
 import org.sid.dtos.CustomerDTO;
+import org.sid.dtos.SavingAccountDTO;
 import org.sid.entities.BanckAccount;
 import org.sid.entities.Customer;
 
 public interface BanckAccountService {
-Customer saveCustomer(Customer customer);
-BanckAccount saveCurrentBanckAccount(double initialBalance,double overDraft,Long customerId) throws CustomerNotFoundException ;
-BanckAccount saveSavingBanckAccount(double initialBalance,double interestRate,Long customerId) throws CustomerNotFoundException ;
+//Customer saveCustomer(Customer customer);
+CurrentAccountDTO saveCurrentBanckAccount(double initialBalance,double overDraft,Long customerId) throws CustomerNotFoundException ;
+SavingAccountDTO saveSavingBanckAccount(double initialBalance,double interestRate,Long customerId) throws CustomerNotFoundException ;
 
 
 
@@ -29,5 +31,8 @@ void transfert(Long accountIdSource, Long accountIdDestination, double amount)
 		throws BankAccountNotFoundException, BalanceNotSufficentException;
 void debit(Long id, double d, String string) throws BankAccountNotFoundException, BalanceNotSufficentException;
 CustomerDTO getCustomerDTO(Long customerId) throws CustomerNotFoundException;
+CustomerDTO saveCustomer(CustomerDTO customerDTO);
+CustomerDTO updateCustomer(CustomerDTO customerDTO);
+void deleteCustomer(Long customerId);
 }
 
