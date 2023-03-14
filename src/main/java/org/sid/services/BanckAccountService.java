@@ -5,6 +5,7 @@ import java.util.List;
 import org.sid.Exception.BalanceNotSufficentException;
 import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
+import org.sid.dtos.BanckAccountDTO;
 import org.sid.dtos.CurrentAccountDTO;
 import org.sid.dtos.CustomerDTO;
 import org.sid.dtos.SavingAccountDTO;
@@ -20,7 +21,7 @@ SavingAccountDTO saveSavingBanckAccount(double initialBalance,double interestRat
 
 
 List<CustomerDTO> listCustomers();
-BanckAccount getBanckAccount(Long accountId);
+BanckAccountDTO getBanckAccount(Long accountId);
 //void debit(String accountId,double amount,String description);
 //void credit(String accountId,double amount,String description);
 //void transfert(String accountIdSource, String accountIdDestination,double amount) throws BankAccountNotFoundException, BalanceNotSufficentException;

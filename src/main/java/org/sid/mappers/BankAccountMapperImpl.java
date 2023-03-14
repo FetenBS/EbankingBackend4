@@ -1,5 +1,6 @@
 package org.sid.mappers;
 
+import org.sid.dtos.BanckAccountDTO;
 import org.sid.dtos.CurrentAccountDTO;
 import org.sid.dtos.CustomerDTO;
 import org.sid.dtos.SavingAccountDTO;
@@ -62,5 +63,9 @@ public CurrentAccountDTO fromCurrentAccount(CurrentAccount currentAccount) {
 	BeanUtils.copyProperties(currentAccount, currentAccountDTO);
 	currentAccountDTO.setCustomerDto(fromCustomer(currentAccount.getCustomer()));
 	return currentAccountDTO;
+}
+public BanckAccountDTO fromSavingAccount(SavingAccount savingAccount) {
+	// TODO Auto-generated method stub
+	return null;
 }
 }
