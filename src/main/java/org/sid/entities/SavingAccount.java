@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @Data @NoArgsConstructor @AllArgsConstructor
 public class SavingAccount extends BanckAccount {
 private double interestRate;
-private AccountStatus status;
+//private AccountStatus status;
 }

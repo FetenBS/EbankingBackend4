@@ -2,7 +2,9 @@ package org.sid.web;
 
 import java.util.List;
 
+import org.sid.Exception.BankAccountNotFoundException;
 import org.sid.Exception.CustomerNotFoundException;
+import org.sid.dtos.BanckAccountDTO;
 import org.sid.dtos.CustomerDTO;
 import org.sid.entities.Customer;
 import org.sid.services.BanckAccountService;
@@ -54,4 +56,5 @@ public CustomerDTO updaCustomerDTO(@PathVariable Long customerId,@RequestBody Cu
 public void deleteCustomer(@PathVariable Long id) {
 	banckAccountService.deleteCustomer(id);
 }
+
 }

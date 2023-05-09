@@ -46,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Slf4j
 
-public class BanckAccountServiceImpl implements BanckAccountService {
+public  class BanckAccountServiceImpl implements BanckAccountService {
 
 //private static final List<CustomerDTO> customerDTOS = null;
 //private  List<BanckAccount> bankAccountRepository = null;
@@ -61,11 +61,7 @@ private BankAccountMapperImpl dtoMapper;
 	Customer savedCustomer=customerRepository.save(customer);
 		return dtoMapper.fromCustomer(savedCustomer);
 	}
-	@Override
-	public
-	List<BanckAccount> banckAccountsList(){
-		return banckAccountRepository.findAll();}
-
+	
 
 /*	public BanckAccount saveBanckAccount(double initialBalance, String type, Long customerId) throws CustomerNotFoundException {
 		Customer customer=customerRepository.findById(customerId).orElse(null);
@@ -183,7 +179,7 @@ savingAccount.setCustomer(customer);
 savingAccount.setInterestRate(interestRate);
 SavingAccount savedBanckAccount=banckAccountRepository.save(savingAccount);
 		
-		return dtoMapper.fromAccountDTO(savedBanckAccount);
+		return dtoMapper.fromSavingAccountDTO(savedBanckAccount);
 	}
 
 
@@ -197,11 +193,24 @@ SavingAccount savedBanckAccount=banckAccountRepository.save(savingAccount);
 		
 	}*/
 	@Override
-public 	List<BanckAccount> bankAccountList(){
+public 	List<BanckAccountDTO> banckAccountsList(){
 	
-	
-	return banckAccountRepository.findAll();
+	List<BanckAccount> bankAccounts=banckAccountRepository.findAll();
+	List<BanckAccountDTO> bankAcountDTOs=bankAccounts.stream().map(bankAccount->{
+		if (bankAccount instanceof SavingAccount) {
+			SavingAccount savingAccount=(SavingAccount) bankAccount;
+			return dtoMapper.fromSavingAccount(savingAccount);		}
+		else{
+			CurrentAccount currentAccount=(CurrentAccount) bankAccount;
+			return dtoMapper.fromCurrentAccount(currentAccount);	
+			}
 		
+	}).collect(Collectors.toList());
+	return bankAcountDTOs;
+
+		
+
+		//return bankAcountDTOs;
 	}
 	@Override
 public CustomerDTO getCustomerDTO(Long customerId)throws CustomerNotFoundException {
@@ -221,5 +230,34 @@ public CustomerDTO getCustomerDTO(Long customerId)throws CustomerNotFoundExcepti
 	public void deleteCustomer(Long customerId) {
 		customerRepository.deleteById(customerId);
 	}
+
+
 	
+
+	
+
+
+	
+
+
+
+
+	
+
+
+
+
+
+	
+
+
+
+
+
+	
+	
+	
+	
+	
+
 }

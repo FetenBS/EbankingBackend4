@@ -25,9 +25,9 @@ BanckAccountDTO getBanckAccount(Long accountId);
 //void debit(String accountId,double amount,String description);
 //void credit(String accountId,double amount,String description);
 //void transfert(String accountIdSource, String accountIdDestination,double amount) throws BankAccountNotFoundException, BalanceNotSufficentException;
-List<BanckAccount> banckAccountsList();
+//List<BanckAccount> banckAccountsList();
 void credit(Long accountId, double amount, String description) throws BankAccountNotFoundException, BalanceNotSufficentException;
-List<BanckAccount> bankAccountList();
+//List<BanckAccountDTO> bankAccountList();
 void transfert(Long accountIdSource, Long accountIdDestination, double amount)
 		throws BankAccountNotFoundException, BalanceNotSufficentException;
 void debit(Long id, double d, String string) throws BankAccountNotFoundException, BalanceNotSufficentException;
@@ -35,5 +35,14 @@ CustomerDTO getCustomerDTO(Long customerId) throws CustomerNotFoundException;
 CustomerDTO saveCustomer(CustomerDTO customerDTO);
 CustomerDTO updateCustomer(CustomerDTO customerDTO);
 void deleteCustomer(Long customerId);
+//BanckAccountDTO getBanckAccountDTO(Object object);
+//BanckAccountDTO getBanckAccountDTO(Long accountId);
+//List<BanckAccountDTO> bankAccountsList();
+//List<BanckAccountDTO> bankAccountsList();
+//List<BanckAccountDTO> bankAccountsList();
+List<BanckAccountDTO> banckAccountsList();
+
+
+
 }
 

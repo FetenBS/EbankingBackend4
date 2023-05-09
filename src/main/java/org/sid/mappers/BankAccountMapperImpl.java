@@ -44,10 +44,11 @@ public SavingAccount fromSavingAccountDTO(SavingAccountDTO savingAccountDTO) {
 	savingAccount.setCustomer(fromCustomerDTO(savingAccountDTO.getCustomerDto()));
 	return savingAccount;
 }
-public SavingAccountDTO fromAccountDTO(SavingAccount savingAccount) {
+public SavingAccountDTO fromSavingAccountDTO(SavingAccount savingAccount) {
 	SavingAccountDTO savingAccountDTO=new SavingAccountDTO();
 	BeanUtils.copyProperties(savingAccount, savingAccountDTO);
 	savingAccountDTO.setCustomerDto(fromCustomer(savingAccount.getCustomer()));
+	savingAccountDTO.setType(savingAccount.getClass().getSimpleName());
 	return savingAccountDTO;
 	
 }
@@ -62,6 +63,7 @@ public CurrentAccountDTO fromCurrentAccount(CurrentAccount currentAccount) {
 	CurrentAccountDTO currentAccountDTO=new CurrentAccountDTO();
 	BeanUtils.copyProperties(currentAccount, currentAccountDTO);
 	currentAccountDTO.setCustomerDto(fromCustomer(currentAccount.getCustomer()));
+	currentAccountDTO.setType(currentAccount.getClass().getSimpleName());
 	return currentAccountDTO;
 }
 public BanckAccountDTO fromSavingAccount(SavingAccount savingAccount) {

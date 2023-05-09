@@ -6,7 +6,7 @@ import org.sid.enums.AccountStatus;
 
 import lombok.Data;
 @Data
-public class SavingAccountDTO {
+public class SavingAccountDTO extends BanckAccountDTO {
 	private Long id;
 	private double balance;
 	private Date createdAt;
